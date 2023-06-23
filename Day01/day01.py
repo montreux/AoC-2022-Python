@@ -1,7 +1,9 @@
+from typing import List
+
 from day01_data import EXAMPLE_INPUT, PUZZLE_INPUT
 
 # read the data from EXAMPLE_INPUT and convert it a list of lists of integers. Blank lines in the input are separators.
-def read_calorie_data(input):
+def read_calorie_data(input: List[str]):
     all_calories = []
     current_calories = []
     for line in input.splitlines():
@@ -32,16 +34,15 @@ def get_index_of_elf_carrying_most_calories(input):
 
 def part_one(input):
     elf_index, elf_calories = get_index_of_elf_carrying_most_calories(input)
-    print("Elf {} carried {} calories".format(elf_index+1, elf_calories))
+    return "Elf {} carried {} calories".format(elf_index+1, elf_calories)
 
 
-print("Part one - example data:")
-part_one(EXAMPLE_INPUT)
+if __name__ == "__main__":
+    print("Part one - example data:")
+    print(part_one(EXAMPLE_INPUT))
 
-print("\nPart one - puzzle data:")
-part_one(PUZZLE_INPUT)
-
-from typing import List
+    print("\nPart one - puzzle data:")
+    print(part_one(PUZZLE_INPUT))
 
 
 class Elf:
@@ -54,6 +55,11 @@ class Elf:
     
     def __lt__(self, other):
         return self.calories < other.calories
+    
+    def __eq__(self, other):
+        if isinstance(other, Elf):
+            return self.index == other.index and self.calories == other.calories
+        return False
 
 
 def get_calorie_totals(input: List[str]) -> List[Elf]:
@@ -77,11 +83,12 @@ def part_two(input: List[str]):
         print(top_elf)
 
     sum_of_top_three = sum([elf.calories for elf in elf_calorie_totals[:3]])
-    print(f"Sum of top three elves calories: {sum_of_top_three}")
+    return f"Sum of top three elves calories: {sum_of_top_three}"
 
 
-print("\nPart two - example data:")
-part_two(EXAMPLE_INPUT)
+if __name__ == "__main__":
+    print("\nPart two - example data:")
+    print(part_two(EXAMPLE_INPUT))
 
-print("\nPart two - puzzle data:")
-part_two(PUZZLE_INPUT)
+    print("\nPart two - puzzle data:")
+    print(part_two(PUZZLE_INPUT))
