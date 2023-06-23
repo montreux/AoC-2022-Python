@@ -2,8 +2,11 @@ from typing import List
 
 from day01_data import EXAMPLE_INPUT, PUZZLE_INPUT
 
-# read the data from EXAMPLE_INPUT and convert it a list of lists of integers. Blank lines in the input are separators.
 def read_calorie_data(input: List[str]):
+    """
+    Read the input data and convert it to a lists of integers. Blank lines in
+    the input are separators.
+    """
     all_calories = []
     current_calories = []
     for line in input.splitlines():
