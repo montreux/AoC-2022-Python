@@ -15,10 +15,30 @@ winning_moves = {
     "Paper": "Rock",
     "Scissors": "Paper",
 }
+move_meaning_part_two = {
+    "X": "W",
+    "Y": "D",
+    "Z": "L",
+}
 
 
-def translate_move(move: str):
-    return move_meaning[move]
+def translate_moves(their_encrypted_move: str, your_encrypted_move: str, part: int):
+    their_move = move_meaning[their_encrypted_move]
+    if part == 2:
+        desired_result = move_meaning_part_two[your_encrypted_move]
+        if desired_result == "D":
+            return [their_move, their_move]
+
+        if desired_result == "W":
+            return [their_move, winning_moves[their_move]]
+
+        if desired_result == "L":
+            return [their_move, winning_moves[winning_moves[their_move]]]
+
+    # Default to part 1 logic
+    your_move = move_meaning[your_encrypted_move]
+
+    return [their_move, your_move]
 
 
 def read_move_data(input: str) -> List[List[str]]:
@@ -37,15 +57,14 @@ def score_outcome(their_move: str, your_move: str):
     return loss_draw_win["L"]
 
 
-def score_round(round: List[str]):
-    their_move = translate_move(round[0])
-    your_move = translate_move(round[1])
+def score_round(round: List[str], part: int):
+    [their_move, your_move] = translate_moves(round, part)
     outcome_score = score_outcome(their_move, your_move)
     total_score = outcome_score + move_values[your_move]
     return total_score
 
 
-def score_match(input: str):
+def score_match(input: str, part: int = 1):
     move_data = read_move_data(input)
     total_score = 0
     for round in move_data:

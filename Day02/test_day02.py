@@ -13,6 +13,10 @@ class TestElfRockPaperScissors(unittest.TestCase):
         expected_output = 11906
         self.assertEqual(score_match(PUZZLE_INPUT), expected_output)
 
+    def test_score_round_part_two_example_data(self):
+        expected_output = 12
+        self.assertEqual(score_match(EXAMPLE_INPUT, part=2), expected_output)
+
 
 if __name__ == "__main__":
     unittest.main()
