@@ -1,6 +1,6 @@
 from typing import List
 
-move_values = {"X": 1, "Y": 2, "Z": 3}
+move_values = {"Rock": 1, "Paper": 2, "Scissors": 3}
 loss_draw_win = {"L": 0, "D": 3, "W": 6}
 move_meaning = {
     "A": "Rock",
@@ -29,15 +29,20 @@ def read_move_data(input: str) -> List[List[str]]:
     return move_data
 
 
-# BUG: Forgot to add the score for the move
-def score_round(round: List[str]):
-    their_move = translate_move(round[0])
-    your_move = translate_move(round[1])
+def score_outcome(their_move: str, your_move: str):
     if their_move == your_move:
         return loss_draw_win["D"]
     if their_move == winning_moves[your_move]:
         return loss_draw_win["W"]
     return loss_draw_win["L"]
+
+
+def score_round(round: List[str]):
+    their_move = translate_move(round[0])
+    your_move = translate_move(round[1])
+    outcome_score = score_outcome(their_move, your_move)
+    total_score = outcome_score + move_values[your_move]
+    return total_score
 
 
 def score_match(input: str):
