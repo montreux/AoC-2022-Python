@@ -42,7 +42,7 @@ def translate_moves(their_encrypted_move: str, your_encrypted_move: str, part: i
 
 
 def read_move_data(input: str) -> List[List[str]]:
-    move_data = []
+    move_data: List[List[str]] = []
     for line in input.splitlines():
         move = line.strip().split()
         move_data.append(move)
@@ -58,7 +58,7 @@ def score_outcome(their_move: str, your_move: str):
 
 
 def score_round(round: List[str], part: int):
-    [their_move, your_move] = translate_moves(round, part)
+    [their_move, your_move] = translate_moves(round[0], round[1], part)
     outcome_score = score_outcome(their_move, your_move)
     total_score = outcome_score + move_values[your_move]
     return total_score
@@ -68,5 +68,5 @@ def score_match(input: str, part: int = 1):
     move_data = read_move_data(input)
     total_score = 0
     for round in move_data:
-        total_score += score_round(round)
+        total_score += score_round(round, part)
     return total_score
