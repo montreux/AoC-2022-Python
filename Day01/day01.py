@@ -2,7 +2,8 @@ from typing import List
 
 from day01_data import EXAMPLE_INPUT, PUZZLE_INPUT
 
-def read_calorie_data(input: List[str]):
+
+def read_calorie_data(input: str) -> List[List[int]]:
     """
     Read the input data and convert it to a lists of integers. Blank lines in
     the input are separators.
@@ -35,9 +36,10 @@ def get_index_of_elf_carrying_most_calories(input):
 
     return max_calories_index, max_calories
 
+
 def part_one(input):
     elf_index, elf_calories = get_index_of_elf_carrying_most_calories(input)
-    return "Elf {} carried {} calories".format(elf_index+1, elf_calories)
+    return "Elf {} carried {} calories".format(elf_index + 1, elf_calories)
 
 
 if __name__ == "__main__":
@@ -55,10 +57,10 @@ class Elf:
 
     def __repr__(self):
         return f"Elf {self.index} with {self.calories} calories"
-    
+
     def __lt__(self, other):
         return self.calories < other.calories
-    
+
     def __eq__(self, other):
         if isinstance(other, Elf):
             return self.index == other.index and self.calories == other.calories
@@ -70,7 +72,7 @@ def get_calorie_totals(input: List[str]) -> List[Elf]:
     calorie_totals = []
     for elf_index, elf_calories in enumerate(calorie_data):
         calories_for_this_elf = sum(elf_calories)
-        calorie_totals.append(Elf(elf_index+1, calories_for_this_elf))
+        calorie_totals.append(Elf(elf_index + 1, calories_for_this_elf))
 
     # sort the list of elves by their calorie totals, descending
     calorie_totals.sort()
