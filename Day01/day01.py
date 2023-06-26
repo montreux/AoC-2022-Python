@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from day01_data import EXAMPLE_INPUT, PUZZLE_INPUT
 
@@ -8,8 +8,8 @@ def read_calorie_data(input: str) -> List[List[int]]:
     Read the input data and convert it to a lists of integers. Blank lines in
     the input are separators.
     """
-    all_calories = []
-    current_calories = []
+    all_calories: List[List[int]] = []
+    current_calories: List[int] = []
     for line in input.splitlines():
         if line == "":
             all_calories.append(current_calories)
@@ -23,7 +23,7 @@ def read_calorie_data(input: str) -> List[List[int]]:
     return all_calories
 
 
-def get_index_of_elf_carrying_most_calories(input):
+def get_index_of_elf_carrying_most_calories(input: str):
     calorie_data = read_calorie_data(input)
     max_calories = -1
     max_calories_index = -1
@@ -37,7 +37,7 @@ def get_index_of_elf_carrying_most_calories(input):
     return max_calories_index, max_calories
 
 
-def part_one(input):
+def part_one(input: str):
     elf_index, elf_calories = get_index_of_elf_carrying_most_calories(input)
     return "Elf {} carried {} calories".format(elf_index + 1, elf_calories)
 
@@ -58,18 +58,18 @@ class Elf:
     def __repr__(self):
         return f"Elf {self.index} with {self.calories} calories"
 
-    def __lt__(self, other):
+    def __lt__(self, other: "Elf"):
         return self.calories < other.calories
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any):
         if isinstance(other, Elf):
             return self.index == other.index and self.calories == other.calories
         return False
 
 
-def get_calorie_totals(input: List[str]) -> List[Elf]:
+def get_calorie_totals(input: str) -> List[Elf]:
     calorie_data = read_calorie_data(input)
-    calorie_totals = []
+    calorie_totals: List[Elf] = []
     for elf_index, elf_calories in enumerate(calorie_data):
         calories_for_this_elf = sum(elf_calories)
         calorie_totals.append(Elf(elf_index + 1, calories_for_this_elf))
@@ -81,7 +81,7 @@ def get_calorie_totals(input: List[str]) -> List[Elf]:
     return calorie_totals
 
 
-def part_two(input: List[str]):
+def part_two(input: str):
     elf_calorie_totals = get_calorie_totals(input)
 
     for top_elf in elf_calorie_totals[:3]:
