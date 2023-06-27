@@ -1,44 +1,60 @@
+from enum import Enum
 from typing import List
 
-move_values = {"Rock": 1, "Paper": 2, "Scissors": 3}
-loss_draw_win = {"L": 0, "D": 3, "W": 6}
+
+class Move(Enum):
+    ROCK = 1
+    PAPER = 2
+    SCISSORS = 3
+
+
+class Result(Enum):
+    LOSS = 0
+    DRAW = 3
+    WIN = 6
+
+
 move_meaning = {
-    "A": "Rock",
-    "B": "Paper",
-    "C": "Scissors",
-    "X": "Rock",
-    "Y": "Paper",
-    "Z": "Scissors",
+    "A": Move.ROCK,
+    "B": Move.PAPER,
+    "C": Move.SCISSORS,
+    "X": Move.ROCK,
+    "Y": Move.PAPER,
+    "Z": Move.SCISSORS,
 }
+
 winning_moves = {
-    "Rock": "Scissors",
-    "Paper": "Rock",
-    "Scissors": "Paper",
+    Move.ROCK: Move.SCISSORS,
+    Move.PAPER: Move.ROCK,
+    Move.SCISSORS: Move.PAPER,
 }
+
 move_meaning_part_two = {
-    "X": "W",
-    "Y": "D",
-    "Z": "L",
+    "X": Result.WIN,
+    "Y": Result.DRAW,
+    "Z": Result.LOSS,
 }
 
 
-def translate_moves(their_encrypted_move: str, your_encrypted_move: str, part: int):
-    their_move = move_meaning[their_encrypted_move]
+def translate_moves(
+    opponent_encrypted_move: str, player_encrypted_move: str, part: int
+):
+    opponent_move = move_meaning[opponent_encrypted_move]
     if part == 2:
-        desired_result = move_meaning_part_two[your_encrypted_move]
-        if desired_result == "D":
-            return [their_move, their_move]
+        desired_result = move_meaning_part_two[player_encrypted_move]
+        if desired_result == Result.DRAW:
+            return (opponent_move, opponent_move)
 
-        if desired_result == "W":
-            return [their_move, winning_moves[their_move]]
+        if desired_result == Result.WIN:
+            return (opponent_move, winning_moves[opponent_move])
 
-        if desired_result == "L":
-            return [their_move, winning_moves[winning_moves[their_move]]]
+        if desired_result == Result.LOSS:
+            return (opponent_move, winning_moves[winning_moves[opponent_move]])
 
     # Default to part 1 logic
-    your_move = move_meaning[your_encrypted_move]
+    player_move = move_meaning[player_encrypted_move]
 
-    return [their_move, your_move]
+    return (opponent_move, player_move)
 
 
 def read_move_data(input: str) -> List[List[str]]:
@@ -49,18 +65,21 @@ def read_move_data(input: str) -> List[List[str]]:
     return move_data
 
 
-def score_outcome(their_move: str, your_move: str):
-    if their_move == your_move:
-        return loss_draw_win["D"]
-    if their_move == winning_moves[your_move]:
-        return loss_draw_win["W"]
-    return loss_draw_win["L"]
+def score_outcome(opponent_move: Move, player_move: Move) -> int:
+    if opponent_move == player_move:
+        return Result.DRAW.value
+    if opponent_move == winning_moves[player_move]:
+        return Result.WIN.value
+    return Result.LOSS.value
 
 
 def score_round(round: List[str], part: int):
-    [their_move, your_move] = translate_moves(round[0], round[1], part)
-    outcome_score = score_outcome(their_move, your_move)
-    total_score = outcome_score + move_values[your_move]
+    opponent_encrypted_move, player_encrypted_move = round
+    [opponent_move, player_move] = translate_moves(
+        opponent_encrypted_move, player_encrypted_move, part
+    )
+    outcome_score = score_outcome(opponent_move, player_move)
+    total_score = outcome_score + player_move.value
     return total_score
 
 
