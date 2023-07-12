@@ -26,6 +26,12 @@ all_rucksack_data[i : i + 3] for i in range(0, len(all_rucksack_data), 3)
 ]
 ```
 
+    - `[i : i + 3]`
+        - elements at indices i, i + 1, and i + 2
+        - or i to end if less than 3 elements
+    - `for i in range(0, len(all_rucksack_data), 3)`
+        - i = 0, 3, 6, ..., len(all_rucksack_data) - 1
+
 - No method overloading in Python, so only one method with each name, including `__init__`
 
   - So factory methods have to be explicit class methods, not hidden in an overloaded constructor
